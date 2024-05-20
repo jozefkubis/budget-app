@@ -3,3 +3,167 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.app {
+  width: 280px;
+  height: auto;
+
+  border: 1px solid black;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  margin: 7px;
+  border-radius: 5px;
+  padding: 7px;
+}
+
+.header select {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid black;
+  border: none;
+}
+
+.header select:focus {
+  outline: none;
+}
+
+.header select option {
+  padding: 5px;
+}
+
+.balnce-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+}
+
+.balance {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: orange;
+  margin: 7px;
+  border-radius: 5px;
+}
+
+.income-expense {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  background-color: #f5f5f5;
+}
+
+.income {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: greenyellow;
+  width: 50%;
+  margin: 7px;
+  margin-right: 3px;
+  border-radius: 5px;
+}
+
+.expense {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: red;
+  width: 50%;
+  margin: 7px;
+  margin-left: 3px;
+  border-radius: 5px;
+}
+
+.today {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  padding: 10px;
+  margin: 7px;
+  border-radius: 5px;
+}
+
+.today-total {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f5f5f5;
+  margin: 7px;
+}
+
+.transactions-today {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+}
+
+.transactions-today div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #f5f5f5;
+}
+
+.monthly {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  padding: 10px;
+  margin: 7px;
+  border-radius: 5px;
+}
+
+.monthly-total {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f5f5f5;
+  margin: 7px;
+}
+
+.transactions-monthly {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+}
+
+.transactions-monthly div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #f5f5f5;
+}

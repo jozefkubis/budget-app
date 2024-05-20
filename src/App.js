@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { MdAddCircleOutline } from "react-icons/md"
 
 export default function App() {
   return (
@@ -37,7 +38,7 @@ function Balnce() {
   return (
     <div className="balance-container">
       <div className="balance">
-        <h4>Balance</h4>
+        <h4>Balance💳</h4>
         <h1>$0.00</h1>
       </div>
 
@@ -52,7 +53,7 @@ function Balnce() {
 function Income() {
   return (
     <div className="income">
-      <h4>Income</h4>
+      <h4>Income🤑</h4>
       <h1>$0.00</h1>
     </div>
   )
@@ -61,7 +62,7 @@ function Income() {
 function Expense() {
   return (
     <div className="expense">
-      <h4>Expense</h4>
+      <h4>Expense💸</h4>
       <h1>$0.00</h1>
     </div>
   )
@@ -70,19 +71,19 @@ function Expense() {
 function Today() {
   return (
     <div className="today">
-      <h2 className="today-total">
-        Today <span>- $0.00</span>
-      </h2>
+      <div className="today-total">
+        <h4>Today</h4> <span>- $0.00</span>
+      </div>
       <div className="transactions-today">
-        <p>
-          Food <span>- $0.00</span>
-        </p>
-        <p>
-          Coffee <span>- $0.00</span>
-        </p>
-        <p>
-          Food <span>- $0.00</span>
-        </p>
+        <div>
+          <p>🍔Food</p> <span>- $0.00</span>
+        </div>
+        <div>
+          <p>☕Coffee</p> <span>- $0.00</span>
+        </div>
+        <div>
+          <p>🏠Rent</p> <span>- $0.00</span>
+        </div>
       </div>
     </div>
   )
@@ -91,19 +92,19 @@ function Today() {
 function Monthly() {
   return (
     <div className="monthly">
-      <h2 className="monthly-total">
-        Monthly <span>- $0.00</span>
-      </h2>
+      <div className="monthly-total">
+        <h4>Monthly </h4> <span>- $0.00</span>
+      </div>
       <div className="transactions-monthly">
-        <p>
-          Food <span>- $0.00</span>
-        </p>
-        <p>
-          Coffee <span>- $0.00</span>
-        </p>
-        <p>
-          Food <span>- $0.00</span>
-        </p>
+        <div>
+          <p>🍔Food</p> <span>- $0.00</span>
+        </div>
+        <div>
+          <p>☕Coffee</p> <span>- $0.00</span>
+        </div>
+        <div>
+          <p>🏠Rent</p> <span>- $0.00</span>
+        </div>
       </div>
     </div>
   )
@@ -112,9 +113,10 @@ function Monthly() {
 function Add() {
   return (
     <div className="add">
-      <h2>
-        Add new transaction <span>+</span>
-      </h2>
+      <h4>Add new transaction </h4>
+      <span>
+        <MdAddCircleOutline />
+      </span>
     </div>
   )
 }
