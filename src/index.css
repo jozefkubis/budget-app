@@ -37,8 +37,8 @@ body {
 .header select {
   padding: 5px;
   border-radius: 5px;
-  border: 1px solid black;
   border: none;
+  outline: none;
   font-weight: bold;
 }
 
