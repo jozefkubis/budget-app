@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { MdAddCircleOutline } from "react-icons/md"
 
+//MARK: App
 export default function App() {
   return (
     <div className="app">
@@ -13,6 +14,9 @@ export default function App() {
   )
 }
 
+//MARK: Components
+
+//MARK: Header
 function Header() {
   return (
     <div className="header">
@@ -34,6 +38,7 @@ function Header() {
   )
 }
 
+//MARK: Balnce
 function Balnce() {
   return (
     <div className="balance-container">
@@ -50,6 +55,7 @@ function Balnce() {
   )
 }
 
+//MARK: Income
 function Income() {
   return (
     <div className="income">
@@ -59,6 +65,7 @@ function Income() {
   )
 }
 
+//MARK: Expense
 function Expense() {
   return (
     <div className="expense">
@@ -68,6 +75,7 @@ function Expense() {
   )
 }
 
+//MARK: Today
 function Today() {
   return (
     <div className="today">
@@ -89,6 +97,7 @@ function Today() {
   )
 }
 
+//MARK: Monthly
 function Monthly() {
   return (
     <div className="monthly">
@@ -110,6 +119,7 @@ function Monthly() {
   )
 }
 
+//MARK: Add
 function Add() {
   return (
     <div className="add">
