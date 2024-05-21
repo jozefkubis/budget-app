@@ -3,54 +3,67 @@ import { MdAddCircleOutline } from "react-icons/md"
 
 //MARK: App
 export default function App() {
+  const months = [
+    "január",
+    "február",
+    "marec",
+    "apríl",
+    "máj",
+    "jún",
+    "júl",
+    "august",
+    "september",
+    "október",
+    "november",
+    "december",
+  ]
+
+  const date = new Date()
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
+  const time = hours + "." + (minutes < 10 ? "0" : "") + minutes
+  const monthName = months[date.getMonth()]
+  const [numTime, setNumTime] = useState(Number(time))
+
+  const [month, setMonth] = useState("january")
+
   const [balance, setBalance] = useState(0)
   const [income, setIncome] = useState(0)
   const [expense, setExpense] = useState(0)
 
-  const [today, setToday] = useState(0)
-  const [monthly, setMonthly] = useState(0)
   const [food, setFood] = useState(0)
   const [coffee, setCoffee] = useState(0)
   const [rent, setRent] = useState(0)
 
   const [cost, setCost] = useState("")
-  const [sortBy, setSortBy] = useState("income")
+  const [sortBy, setSortBy] = useState("")
 
   //MARK: Functions
 
   //MARK: handleOnClick
   function handleOnClick() {
-    if (sortBy === "income") {
-      setIncome((prev) => prev + Number(cost))
-    } else {
-      setExpense((prev) => prev + Number(cost))
-      setToday((prev) => prev + Number(cost))
-      setMonthly((prev) => prev + Number(cost))
-    }
-
+    sortBy === "income"
+      ? setIncome((prev) => prev + Number(cost))
+      : setExpense((prev) => prev + Number(cost))
     sortBy === "coffee" && setCoffee((prev) => prev + Number(cost))
     sortBy === "food" && setFood((prev) => prev + Number(cost))
     sortBy === "rent" && setRent((prev) => prev + Number(cost))
+    sortBy === "" && alert("Please select a category")
+
     setCost("")
   }
 
   return (
     <div className="app">
-      <Header />
+      <Header month={month} setMonth={setMonth} />
       <Balnce balance={balance} income={income} expense={expense} />
-      <Today
-        today={today}
-        monthly={monthly}
-        food={food}
-        coffee={coffee}
-        rent={rent}
-      />
+      <Today food={food} coffee={coffee} rent={rent} numTime={numTime} />
       <Monthly
-        today={today}
-        monthly={monthly}
         food={food}
         coffee={coffee}
         rent={rent}
+        month={month}
+        monthName={monthName}
       />
       <Add
         cost={cost}
@@ -61,6 +74,9 @@ export default function App() {
         setIncome={setIncome}
         setExpense={setExpense}
         setBalance={setBalance}
+        setFood={setFood}
+        setCoffee={setCoffee}
+        setRent={setRent}
       />
     </div>
   )
@@ -69,9 +85,13 @@ export default function App() {
 //MARK: Components
 
 //MARK: Header
-function Header() {
+function Header({ month, setMonth }) {
   return (
-    <div className="header">
+    <div
+      className="header"
+      value={month}
+      onChange={(e) => setMonth(e.target.value)}
+    >
       <select>
         <option value="january">JANUARY</option>
         <option value="february">FEBRUARY</option>
@@ -122,17 +142,17 @@ function Expense({ expense }) {
   return (
     <div className="expense">
       <h4>Expense💸</h4>
-      <h1>${expense}</h1>
+      <h1>-${expense}</h1>
     </div>
   )
 }
 
 //MARK: Today
-function Today({ today, monthly, food, coffee, rent }) {
+function Today({ food, coffee, rent, numTime }) {
   return (
     <div className="today">
       <div className="today-total">
-        <h4>Today</h4> <span>- ${today}</span>
+        <h4>Today</h4> <span>- ${food + coffee + rent}</span>
       </div>
       <div className="transactions-today">
         <div>
@@ -150,11 +170,11 @@ function Today({ today, monthly, food, coffee, rent }) {
 }
 
 //MARK: Monthly
-function Monthly({ monthly, food, coffee, rent }) {
+function Monthly({ food, coffee, rent, month, monthName }) {
   return (
     <div className="monthly">
       <div className="monthly-total">
-        <h4>Monthly </h4> <span>- ${monthly}</span>
+        <h4>Monthly </h4> <span>- ${food + coffee + rent}</span>
       </div>
       <div className="transactions-monthly">
         <div>
@@ -181,13 +201,18 @@ function Add({
   setIncome,
   setExpense,
   setBalance,
+  setFood,
+  setCoffee,
+  setRent,
 }) {
-  // const [sortBy, setSortBy] = useState("ChooseOne")
-
+  //MARK: handleDelete
   function handleDelete() {
     setIncome(0)
     setExpense(0)
     setBalance(0)
+    setFood(0)
+    setCoffee(0)
+    setRent(0)
   }
 
   return (
@@ -195,6 +220,7 @@ function Add({
       <div className="addInput">
         <h3>Transaction</h3>
         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value=""></option>
           <option value="food">Food 🍔</option>
           <option value="coffee">Coffee ☕</option>
           <option value="rent">Rent 🏠</option>
