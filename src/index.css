@@ -15,7 +15,7 @@ body {
 
 /* MARK: App */
 .app {
-  width: 280px;
+  width: 330px;
   height: auto;
   border: 5px solid rgb(102, 99, 99);
   border-radius: 10px;
@@ -64,6 +64,8 @@ body {
   justify-content: center;
   background-color: orange;
   margin: 7px;
+  margin-left: 14px;
+  margin-right: 14px;
   border-radius: 5px;
 }
 
@@ -195,7 +197,7 @@ body {
   justify-content: center;
   background-color: #f5f5f5;
   padding: 10px;
-  margin: 7px;
+  /* margin: 7px; */
   border-radius: 5px;
   color: orangered;
 }
@@ -217,4 +219,66 @@ body {
   width: 30px;
   height: 30px;
   fill: orangered;
+}
+
+/* MARK: Add Input */
+.addInput {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  margin: 7px;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+/* MARK: Add Input H3 */
+.addInput h3 {
+  width: 100%;
+  background-color: #f5f5f5;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  padding: 5px;
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+/* MARK: Add Input Select */
+.addInput select {
+  width: 100%;
+  background-color: white;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+/* MARK: Add Input Input */
+.addInput input {
+  width: 100%;
+  background-color: white;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  padding: 5px;
+}
+
+/* MARK: delete */
+.delete {
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(205, 68, 14);
+  padding: 10px;
+  /* margin: 7px; */
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  font-size: 18px;
 }
