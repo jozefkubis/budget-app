@@ -1,32 +1,9 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { MdAddCircleOutline } from "react-icons/md"
 
 //MARK: App
 export default function App() {
-  const months = [
-    "január",
-    "február",
-    "marec",
-    "apríl",
-    "máj",
-    "jún",
-    "júl",
-    "august",
-    "september",
-    "október",
-    "november",
-    "december",
-  ]
-
-  const date = new Date()
-  const hours = date.getHours()
-  const minutes = date.getMinutes()
-  const time = hours + "." + (minutes < 10 ? "0" : "") + minutes
-  const monthName = months[date.getMonth()]
-  const [numTime, setNumTime] = useState(Number(time))
-
   const [month, setMonth] = useState("january")
-
   const [balance, setBalance] = useState(0)
   const [income, setIncome] = useState(0)
   const [expense, setExpense] = useState(0)
@@ -37,6 +14,25 @@ export default function App() {
 
   const [cost, setCost] = useState("")
   const [sortBy, setSortBy] = useState("")
+
+  const [date, setDate] = useState("")
+
+  useEffect(() => {
+    const RealTime = async () => {
+      const url = "http://worldtimeapi.org/api/timezone/Europe/Bratislava"
+
+      try {
+        const response = await fetch(url)
+        const data = await response.json()
+
+        setDate(data["datetime"].slice(0, 16).replace("T", " "))
+      } catch (error) {
+        console.error("Error fetching real-time data:", error)
+        return null
+      }
+    }
+    RealTime()
+  }, [])
 
   //MARK: Functions
 
@@ -55,16 +51,10 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header month={month} setMonth={setMonth} />
-      <Balnce balance={balance} income={income} expense={expense} />
-      <Today food={food} coffee={coffee} rent={rent} numTime={numTime} />
-      <Monthly
-        food={food}
-        coffee={coffee}
-        rent={rent}
-        month={month}
-        monthName={monthName}
-      />
+      <Header month={month} setMonth={setMonth} date={date} />
+      <Balance balance={balance} income={income} expense={expense} />
+      <Today food={food} coffee={coffee} rent={rent} />
+      <Monthly food={food} coffee={coffee} rent={rent} month={month} />
       <Add
         cost={cost}
         setCost={setCost}
@@ -85,7 +75,7 @@ export default function App() {
 //MARK: Components
 
 //MARK: Header
-function Header({ month, setMonth }) {
+function Header({ month, setMonth, date }) {
   return (
     <div
       className="header"
@@ -106,17 +96,37 @@ function Header({ month, setMonth }) {
         <option value="november">NOVEMBER</option>
         <option value="december">DECEMBER</option>
       </select>
+      <h4>{date}</h4>
     </div>
   )
 }
 
+//MARK: RealTime
+
 //MARK: Balnce
-function Balnce({ balance, income, expense }) {
+function Balance({ balance, income, expense }) {
+  let totalBalance = balance + income - expense
+
+  if (totalBalance < 0) {
+    return (
+      <div className="balance-container">
+        <div style={{ backgroundColor: "red" }} className="balance">
+          <h4 style={{ color: "white" }}>Balance💳</h4>
+          <h1 style={{ color: "white" }}>${totalBalance}</h1>
+        </div>
+        <div className="income-expense">
+          <Income income={income} />
+          <Expense expense={expense} />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="balance-container">
       <div className="balance">
         <h4>Balance💳</h4>
-        <h1>${balance + income - expense}</h1>
+        <h1>${totalBalance}</h1>
       </div>
 
       <div className="income-expense">
@@ -213,6 +223,7 @@ function Add({
     setFood(0)
     setCoffee(0)
     setRent(0)
+    setSortBy("")
   }
 
   return (
