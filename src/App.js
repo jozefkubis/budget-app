@@ -6,83 +6,41 @@ export default function App() {
   const [balance, setBalance] = useState(0)
   const [income, setIncome] = useState(0)
   const [expense, setExpense] = useState(0)
-
-  const [food, setFood] = useState(0)
-  const [coffee, setCoffee] = useState(0)
-  const [rent, setRent] = useState(0)
-  const [entertainment, setEntertainment] = useState(0)
-  const [taxes, setTaxes] = useState(0)
-  const [health, setHealth] = useState(0)
-  const [insurance, setInsurance] = useState(0)
-  const [education, setEducation] = useState(0)
-  const [other, setOther] = useState(0)
+  const [categories, setCategories] = useState({
+    food: 0,
+    coffee: 0,
+    rent: 0,
+    entertainment: 0,
+    taxes: 0,
+    health: 0,
+    insurance: 0,
+    education: 0,
+    other: 0,
+  })
 
   const [cost, setCost] = useState("")
   const [sortBy, setSortBy] = useState("")
-
-  const [date, setDate] = useState("")
+  // const [date, setDate] = useState("")
 
   //MARK: useEffect
   useEffect(() => {
     const loadLocalStorage = () => {
-      const incomeFromLocalStorage = localStorage.getItem("income")
-      const expenseFromLocalStorage = localStorage.getItem("expense")
-      const foodFromLocalStorage = localStorage.getItem("food")
-      const coffeeFromLocalStorage = localStorage.getItem("coffee")
-      const rentFromLocalStorage = localStorage.getItem("rent")
-      const educationFromLocalStorage = localStorage.getItem("education")
-      const entertainmentFromLocalStorage =
-        localStorage.getItem("entertainment")
-      const taxesFromLocalStorage = localStorage.getItem("taxes")
-      const healthFromLocalStorage = localStorage.getItem("health")
-      const insuranceFromLocalStorage = localStorage.getItem("insurance")
-      const otherFromLocalStorage = localStorage.getItem("other")
+      const storedIncome = localStorage.getItem("income")
+      const storedExpense = localStorage.getItem("expense")
+      const storedCategories = JSON.parse(localStorage.getItem("categories"))
 
-      incomeFromLocalStorage && setIncome(Number(incomeFromLocalStorage))
-      expenseFromLocalStorage && setExpense(Number(expenseFromLocalStorage))
-      foodFromLocalStorage && setFood(Number(foodFromLocalStorage))
-      coffeeFromLocalStorage && setCoffee(Number(coffeeFromLocalStorage))
-      rentFromLocalStorage && setRent(Number(rentFromLocalStorage))
-      educationFromLocalStorage &&
-        setEducation(Number(educationFromLocalStorage))
-      entertainmentFromLocalStorage &&
-        setEntertainment(Number(entertainmentFromLocalStorage))
-      taxesFromLocalStorage && setTaxes(Number(taxesFromLocalStorage))
-      healthFromLocalStorage && setHealth(Number(healthFromLocalStorage))
-      insuranceFromLocalStorage &&
-        setInsurance(Number(insuranceFromLocalStorage))
-      otherFromLocalStorage && setOther(Number(otherFromLocalStorage))
+      storedIncome && setIncome(Number(storedIncome))
+      storedExpense && setExpense(Number(storedExpense))
+      storedCategories && setCategories(storedCategories)
     }
     loadLocalStorage()
   }, [])
-
-  //MARK: Functions
-
-  const dayOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ]
-
-  const day = dayOfWeek[new Date().getDay()]
 
   //MARK: handleOnClick
   function handleOnClick() {
     let newIncome = income
     let newExpense = expense
-    let newCoffee = coffee
-    let newFood = food
-    let newRent = rent
-    let newEducation = education
-    let newEntertainment = entertainment
-    let newTaxes = taxes
-    let newHealth = health
-    let newInsurance = insurance
-    let newOther = other
+    const newCategories = { ...categories }
 
     if (sortBy === "income") {
       newIncome += Number(cost)
@@ -92,67 +50,27 @@ export default function App() {
       setExpense(newExpense)
     }
 
-    if (sortBy === "coffee") {
-      newCoffee += Number(cost)
-      setCoffee(newCoffee)
-    } else if (sortBy === "food") {
-      newFood += Number(cost)
-      setFood(newFood)
-    } else if (sortBy === "rent") {
-      newRent += Number(cost)
-      setRent(newRent)
-    } else if (sortBy === "education") {
-      newEducation += Number(cost)
-      setEducation(newEducation)
-    } else if (sortBy === "entertainment") {
-      newEntertainment += Number(cost)
-      setEntertainment(newEntertainment)
-    } else if (sortBy === "taxes") {
-      newTaxes += Number(cost)
-      setTaxes(newTaxes)
-    } else if (sortBy === "other") {
-      newOther += Number(cost)
-      setOther(newOther)
-    } else if (sortBy === "health") {
-      newHealth += Number(cost)
-      setHealth(newHealth)
-    } else if (sortBy === "insurance") {
-      newInsurance += Number(cost)
-      setInsurance(newInsurance)
-    }
     sortBy === "" && alert("Please select a category")
+
+    // if (newCategories[sortBy] !== undefined) {
+    //   newCategories[sortBy] += Number(cost)
+    //   setCategories(newCategories)
+    // } else {
+    //   alert("Please select a category")
+    //   return
+    // }
 
     setCost("")
 
     localStorage.setItem("income", JSON.stringify(newIncome))
     localStorage.setItem("expense", JSON.stringify(newExpense))
-    localStorage.setItem("food", JSON.stringify(newFood))
-    localStorage.setItem("coffee", JSON.stringify(newCoffee))
-    localStorage.setItem("rent", JSON.stringify(newRent))
-    localStorage.setItem("entertainment", JSON.stringify(newEntertainment))
-    localStorage.setItem("education", JSON.stringify(newEducation))
-    localStorage.setItem("taxes", JSON.stringify(newTaxes))
-    localStorage.setItem("other", JSON.stringify(newOther))
-    localStorage.setItem("health", JSON.stringify(newHealth))
-    localStorage.setItem("insurance", JSON.stringify(newInsurance))
+    localStorage.setItem("categories", JSON.stringify(newCategories))
   }
 
   return (
     <div className="app">
       <Balance balance={balance} income={income} expense={expense} />
-      <Today
-        food={food}
-        coffee={coffee}
-        rent={rent}
-        entertainment={entertainment}
-        health={health}
-        insurance={insurance}
-        other={other}
-        taxes={taxes}
-        education={education}
-        day={day}
-      />
-
+      <Today categories={categories} />
       <Add
         cost={cost}
         setCost={setCost}
@@ -162,15 +80,7 @@ export default function App() {
         setIncome={setIncome}
         setExpense={setExpense}
         setBalance={setBalance}
-        setFood={setFood}
-        setCoffee={setCoffee}
-        setRent={setRent}
-        setEntertainment={setEntertainment}
-        setEducation={setEducation}
-        setTaxes={setTaxes}
-        setOther={setOther}
-        setHealth={setHealth}
-        setInsurance={setInsurance}
+        setCategories={setCategories}
       />
     </div>
   )
@@ -178,34 +88,22 @@ export default function App() {
 
 //MARK: Components
 
-//MARK: RealTime
-
-//MARK: Balnce
+//MARK: Balance
 function Balance({ balance, income, expense }) {
   let totalBalance = balance + income - expense
 
-  if (totalBalance < 0) {
-    return (
-      <div className="balance-container">
-        <div style={{ backgroundColor: "red" }} className="balance">
-          <h4 style={{ color: "white" }}>Balance💳</h4>
-          <h1 style={{ color: "white" }}>${totalBalance}</h1>
-        </div>
-        <div className="income-expense">
-          <Income income={income} />
-          <Expense expense={expense} />
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="balance-container">
-      <div className="balance">
+      <div
+        className="balance"
+        style={{
+          backgroundColor: totalBalance < 0 ? "red" : "transparent",
+          color: totalBalance < 0 ? "white" : "black",
+        }}
+      >
         <h4>Balance💳</h4>
         <h1>${totalBalance}</h1>
       </div>
-
       <div className="income-expense">
         <Income income={income} />
         <Expense expense={expense} />
@@ -235,64 +133,33 @@ function Expense({ expense }) {
 }
 
 //MARK: Today
-function Today({
-  food,
-  coffee,
-  rent,
-  entertainment,
-  education,
-  taxes,
-  other,
-  health,
-  insurance,
-  numTime,
-  day,
-}) {
+function Today({ categories }) {
+  const dayOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ]
+  const day = dayOfWeek[new Date().getDay()]
+
+  const total = Object.values(categories).reduce((acc, value) => acc + value, 0)
+
   return (
     <div className="today">
       <div className="today-total">
-        <h4>{day}</h4>{" "}
-        <span>
-          - $
-          {food +
-            coffee +
-            rent +
-            entertainment +
-            health +
-            education +
-            taxes +
-            insurance +
-            other}
-        </span>
+        <h4>{day}</h4>
+        <span>- ${total}</span>
       </div>
       <div className="transactions-today">
-        <div>
-          <p>🍔Food</p> <span>- ${food}</span>
-        </div>
-        <div>
-          <p>☕Coffee</p> <span>- ${coffee}</span>
-        </div>
-        <div>
-          <p>🏠Rent</p> <span>- ${rent}</span>
-        </div>
-        <div>
-          <p>🎭Entertainment</p> <span>- ${entertainment}</span>
-        </div>
-        <div>
-          <p>🏦Taxes</p> <span>- ${taxes}</span>
-        </div>
-        <div>
-          <p>💊Health</p> <span>- ${health}</span>
-        </div>
-        <div>
-          <p>📚Education</p> <span>- ${education}</span>
-        </div>
-        <div>
-          <p>💰Insurance</p> <span>- ${insurance}</span>
-        </div>
-        <div>
-          <p>🤷‍♂️Other</p> <span>- ${other}</span>
-        </div>
+        {Object.entries(categories).map(([key, value]) => (
+          <div key={key}>
+            <p>{key.charAt(0).toUpperCase() + key.slice(1)}</p>
+            <span>- ${value}</span>
+          </div>
+        ))}
       </div>
     </div>
   )
@@ -308,30 +175,24 @@ function Add({
   setIncome,
   setExpense,
   setBalance,
-  setFood,
-  setCoffee,
-  setRent,
-  setEntertainment,
-  setTaxes,
-  setHealth,
-  setEducation,
-  setInsurance,
-  setOther,
+  setCategories,
 }) {
   //MARK: handleDelete
   function handleDelete() {
     setIncome(0)
     setExpense(0)
     setBalance(0)
-    setFood(0)
-    setCoffee(0)
-    setRent(0)
-    setEntertainment(0)
-    setTaxes(0)
-    setHealth(0)
-    setEducation(0)
-    setInsurance(0)
-    setOther(0)
+    setCategories({
+      food: 0,
+      coffee: 0,
+      rent: 0,
+      entertainment: 0,
+      taxes: 0,
+      health: 0,
+      insurance: 0,
+      education: 0,
+      other: 0,
+    })
     setSortBy("")
 
     localStorage.clear()
@@ -360,14 +221,13 @@ function Add({
           value={cost}
           onChange={(e) => setCost(Number(e.target.value))}
         />
-
         <div className="add">
-          <h4>Add new transaction </h4>
-          <span onClick={() => onClick()}>
+          <h4>Add new transaction</h4>
+          <span onClick={onClick}>
             <MdAddCircleOutline />
           </span>
         </div>
-        <button className="delete" onClick={() => handleDelete()}>
+        <button className="delete" onClick={handleDelete}>
           Delete
         </button>
       </div>
