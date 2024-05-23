@@ -52,14 +52,6 @@ export default function App() {
 
     sortBy === "" && alert("Please select a category")
 
-    // if (newCategories[sortBy] !== undefined) {
-    //   newCategories[sortBy] += Number(cost)
-    //   setCategories(newCategories)
-    // } else {
-    //   alert("Please select a category")
-    //   return
-    // }
-
     setCost("")
 
     localStorage.setItem("income", JSON.stringify(newIncome))
