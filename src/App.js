@@ -3,7 +3,6 @@ import { MdAddCircleOutline } from "react-icons/md"
 
 //MARK: App
 export default function App() {
-  const [month, setMonth] = useState("january")
   const [balance, setBalance] = useState(0)
   const [income, setIncome] = useState(0)
   const [expense, setExpense] = useState(0)
@@ -25,19 +24,6 @@ export default function App() {
 
   //MARK: useEffect
   useEffect(() => {
-    const RealTime = async () => {
-      const url = "http://worldtimeapi.org/api/timezone/Europe/Bratislava"
-
-      try {
-        const response = await fetch(url)
-        const data = await response.json()
-
-        setDate(data["datetime"].slice(0, 16).replace("T", " "))
-      } catch (error) {
-        console.error("Error fetching real-time data:", error)
-        return null
-      }
-    }
     const loadLocalStorage = () => {
       const incomeFromLocalStorage = localStorage.getItem("income")
       const expenseFromLocalStorage = localStorage.getItem("expense")
@@ -67,44 +53,22 @@ export default function App() {
         setInsurance(Number(insuranceFromLocalStorage))
       otherFromLocalStorage && setOther(Number(otherFromLocalStorage))
     }
-    RealTime()
     loadLocalStorage()
   }, [])
 
-  // useEffect(() => {
-  //   const loadLocalStorage = () => {
-  //     const incomeFromLocalStorage = localStorage.getItem("income")
-  //     const expenseFromLocalStorage = localStorage.getItem("expense")
-  //     const foodFromLocalStorage = localStorage.getItem("food")
-  //     const coffeeFromLocalStorage = localStorage.getItem("coffee")
-  //     const rentFromLocalStorage = localStorage.getItem("rent")
-  //     const educationFromLocalStorage = localStorage.getItem("education")
-  //     const entertainmentFromLocalStorage =
-  //       localStorage.getItem("entertainment")
-  //     const taxesFromLocalStorage = localStorage.getItem("taxes")
-  //     const healthFromLocalStorage = localStorage.getItem("health")
-  //     const insuranceFromLocalStorage = localStorage.getItem("insurance")
-  //     const otherFromLocalStorage = localStorage.getItem("other")
-
-  //     incomeFromLocalStorage && setIncome(Number(incomeFromLocalStorage))
-  //     expenseFromLocalStorage && setExpense(Number(expenseFromLocalStorage))
-  //     foodFromLocalStorage && setFood(Number(foodFromLocalStorage))
-  //     coffeeFromLocalStorage && setCoffee(Number(coffeeFromLocalStorage))
-  //     rentFromLocalStorage && setRent(Number(rentFromLocalStorage))
-  //     educationFromLocalStorage &&
-  //       setEducation(Number(educationFromLocalStorage))
-  //     entertainmentFromLocalStorage &&
-  //       setEntertainment(Number(entertainmentFromLocalStorage))
-  //     taxesFromLocalStorage && setTaxes(Number(taxesFromLocalStorage))
-  //     healthFromLocalStorage && setHealth(Number(healthFromLocalStorage))
-  //     insuranceFromLocalStorage &&
-  //       setInsurance(Number(insuranceFromLocalStorage))
-  //     otherFromLocalStorage && setOther(Number(otherFromLocalStorage))
-  //   }
-  //   loadLocalStorage()
-  // }, [])
-
   //MARK: Functions
+
+  const dayOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ]
+
+  const day = dayOfWeek[new Date().getDay()]
 
   //MARK: handleOnClick
   function handleOnClick() {
@@ -158,20 +122,6 @@ export default function App() {
     }
     sortBy === "" && alert("Please select a category")
 
-    // sortBy === "income"
-    //   ? setIncome((prev) => prev + Number(cost))
-    //   : setExpense((prev) => prev + Number(cost))
-    // sortBy === "coffee" && setCoffee((prev) => prev + Number(cost))
-    // sortBy === "food" && setFood((prev) => prev + Number(cost))
-    // sortBy === "rent" && setRent((prev) => prev + Number(cost))
-    // sortBy === "education" && setEducation((prev) => prev + Number(cost))
-    // sortBy === "entertainment" &&
-    //   setEntertainment((prev) => prev + Number(cost))
-    // sortBy === "taxes" && setTaxes((prev) => prev + Number(cost))
-    // sortBy === "other" && setOther((prev) => prev + Number(cost))
-    // sortBy === "health" && setHealth((prev) => prev + Number(cost))
-    // sortBy === "insurance" && setInsurance((prev) => prev + Number(cost))
-
     setCost("")
 
     localStorage.setItem("income", JSON.stringify(newIncome))
@@ -189,7 +139,6 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header month={month} setMonth={setMonth} date={date} />
       <Balance balance={balance} income={income} expense={expense} />
       <Today
         food={food}
@@ -201,6 +150,7 @@ export default function App() {
         other={other}
         taxes={taxes}
         education={education}
+        day={day}
       />
 
       <Add
@@ -227,33 +177,6 @@ export default function App() {
 }
 
 //MARK: Components
-
-//MARK: Header
-function Header({ month, setMonth, date }) {
-  return (
-    <div
-      className="header"
-      value={month}
-      onChange={(e) => setMonth(e.target.value)}
-    >
-      <select>
-        <option value="january">JANUARY</option>
-        <option value="february">FEBRUARY</option>
-        <option value="march">MARCH</option>
-        <option value="april">APRIL</option>
-        <option value="may">MAY</option>
-        <option value="june">JUNE</option>
-        <option value="july">JULY</option>
-        <option value="august">AUGUST</option>
-        <option value="september">SEPTEMBER</option>
-        <option value="october">OCTOBER</option>
-        <option value="november">NOVEMBER</option>
-        <option value="december">DECEMBER</option>
-      </select>
-      <h4>{date}</h4>
-    </div>
-  )
-}
 
 //MARK: RealTime
 
@@ -323,11 +246,12 @@ function Today({
   health,
   insurance,
   numTime,
+  day,
 }) {
   return (
     <div className="today">
       <div className="today-total">
-        <h4>Today</h4>{" "}
+        <h4>{day}</h4>{" "}
         <span>
           - $
           {food +

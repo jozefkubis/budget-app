@@ -118,6 +118,10 @@ body {
   border-radius: 5px;
 }
 
+.today div {
+  margin-bottom: 7px;
+}
+
 /* MARK: Today-Total */
 .today-total {
   width: 100%;
