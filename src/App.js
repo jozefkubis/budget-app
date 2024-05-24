@@ -50,6 +50,26 @@ export default function App() {
       setExpense(newExpense)
     }
 
+    if (sortBy === "coffee") {
+      categories[sortBy] += Number(cost)
+    } else if (sortBy === "food") {
+      categories[sortBy] += Number(cost)
+    } else if (sortBy === "rent") {
+      categories[sortBy] += Number(cost)
+    } else if (sortBy === "education") {
+      categories[sortBy] += Number(cost)
+    } else if (sortBy === "entertainment") {
+      categories[sortBy] += Number(cost)
+    } else if (sortBy === "taxes") {
+      categories[sortBy] += Number(cost)
+    } else if (sortBy === "other") {
+      categories[sortBy] += Number(cost)
+    } else if (sortBy === "health") {
+      categories[sortBy] += Number(cost)
+    } else if (sortBy === "insurance") {
+      categories[sortBy] += Number(cost)
+    }
+
     sortBy === "" && alert("Please select a category")
 
     setCost("")
@@ -93,7 +113,7 @@ function Balance({ balance, income, expense }) {
             (totalBalance < 0 && "red") ||
             (totalBalance === 0 && "transparent") ||
             (totalBalance > 0 && "green"),
-          color: totalBalance < 0 ? "white" : "black",
+          color: totalBalance === 0 ? "black" : "white",
         }}
       >
         <h4>Balance💳</h4>
@@ -142,16 +162,31 @@ function Today({ categories }) {
 
   const total = Object.values(categories).reduce((acc, value) => acc + value, 0)
 
+  const categoryEmojis = {
+    food: "🍔",
+    coffee: "☕",
+    rent: "🏠",
+    entertainment: "🎭",
+    taxes: "🏦",
+    health: "💊",
+    insurance: "💰",
+    education: "📚",
+    other: "🤷‍♂️",
+    income: "🤑",
+  }
+
   return (
     <div className="today">
       <div className="today-total">
         <h4>{day}</h4>
-        <span>- ${total}</span>
+        <span style={{ fontWeight: "bold" }}>- ${total}</span>
       </div>
       <div className="transactions-today">
         {Object.entries(categories).map(([key, value]) => (
           <div key={key}>
-            <p>{key.charAt(0).toUpperCase() + key.slice(1)}</p>
+            <p>
+              {categoryEmojis[key]} {key.charAt(0).toUpperCase() + key.slice(1)}
+            </p>
             <span>- ${value}</span>
           </div>
         ))}
