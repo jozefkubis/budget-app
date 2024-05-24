@@ -80,20 +80,23 @@ export default function App() {
   }
 
   return (
-    <div className="app">
-      <Balance balance={balance} income={income} expense={expense} />
-      <Today categories={categories} />
-      <Add
-        cost={cost}
-        setCost={setCost}
-        onClick={handleOnClick}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        setIncome={setIncome}
-        setExpense={setExpense}
-        setBalance={setBalance}
-        setCategories={setCategories}
-      />
+    <div className="container" style={{ display: "flex" }}>
+      <div className="app">
+        <Balance balance={balance} income={income} expense={expense} />
+        <Today categories={categories} />
+        <Add
+          cost={cost}
+          setCost={setCost}
+          onClick={handleOnClick}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+          setIncome={setIncome}
+          setExpense={setExpense}
+          setBalance={setBalance}
+          setCategories={setCategories}
+        />
+      </div>
+      <Ranges />
     </div>
   )
 }
@@ -184,6 +187,7 @@ function Today({ categories }) {
       <div className="transactions-today">
         {Object.entries(categories).map(([key, value]) => (
           <div key={key}>
+            {/* {console.log(key, value)} */}
             <p>
               {categoryEmojis[key]} {key.charAt(0).toUpperCase() + key.slice(1)}
             </p>
@@ -264,3 +268,35 @@ function Add({
     </>
   )
 }
+
+function Ranges() {
+  return (
+    <div className="ranges">
+      <div className="range-balance">
+        Balance
+        <input type="range" />
+      </div>
+      <div className="range-balance">
+        Income
+        <input type="range" />
+      </div>
+      <div className="range-balance">
+        Expanse
+        <input type="range" />
+      </div>
+    </div>
+  )
+}
+
+//MARK: Object.entries
+// const objekt = {
+//   meno: "Bob",
+//   vek: 30,
+//   adresa: "123 Main Street",
+// }
+
+// const poleDvojic = Object.entries(objekt).map(([key, value]) => {
+//   return key + ": " + value alebo `${key}: ${value}`;
+// })
+
+// console.log(poleDvojic)
