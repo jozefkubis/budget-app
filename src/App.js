@@ -20,12 +20,7 @@ export default function App() {
 
   const [cost, setCost] = useState("")
   const [sortBy, setSortBy] = useState("")
-
-  const [sliderBalance, setSliderBalance] = useState(0)
-  const [sliderIncome, setSliderIncome] = useState(0)
-  const [sliderExpense, setSliderExpense] = useState(0)
-  // const categoriesInput = Object.keys(categories)
-  // console.log(categoriesInput)
+  // const [date, setDate] = useState("")
 
   //MARK: useEffect
   useEffect(() => {
@@ -37,13 +32,9 @@ export default function App() {
       storedIncome && setIncome(Number(storedIncome))
       storedExpense && setExpense(Number(storedExpense))
       storedCategories && setCategories(storedCategories)
-
-      setSliderBalance(balance + income - expense)
-      setSliderIncome(income)
-      setSliderExpense(expense)
     }
     loadLocalStorage()
-  }, [balance, income, expense])
+  }, [])
 
   //MARK: handleOnClick
   function handleOnClick() {
@@ -105,20 +96,7 @@ export default function App() {
           setCategories={setCategories}
         />
       </div>
-      <Ranges
-        sliderBalance={sliderBalance}
-        setSliderBalance={setSliderBalance}
-        sliderIncome={sliderIncome}
-        setSliderIncome={setSliderIncome}
-        sliderExpense={sliderExpense}
-        setSliderExpense={setSliderExpense}
-        balance={balance}
-        income={income}
-        expense={expense}
-        // categoriesInput={categoriesInput}
-        setCategories={setCategories}
-        categories={categories}
-      />
+      <Ranges />
     </div>
   )
 }
@@ -209,7 +187,7 @@ function Today({ categories }) {
       <div className="transactions-today">
         {Object.entries(categories).map(([key, value]) => (
           <div key={key}>
-            {console.log(key, value)}
+            {/* {console.log(key, value)} */}
             <p>
               {categoryEmojis[key]} {key.charAt(0).toUpperCase() + key.slice(1)}
             </p>
@@ -291,83 +269,21 @@ function Add({
   )
 }
 
-function Ranges({
-  sliderBalance,
-  setSliderBalance,
-  sliderIncome,
-  setSliderIncome,
-  sliderExpense,
-  setSliderExpense,
-  // categoriesInput,
-  categories,
-  setCategories,
-}) {
-  const oneHalf = sliderBalance / 2
-
+function Ranges() {
   return (
-    <div className="sliders">
-      <div>
+    <div className="ranges">
+      <div className="range-balance">
         Balance
-        <input
-          type="range"
-          className="range-balance"
-          value={sliderBalance}
-          min={-5000}
-          max={5000}
-          onChange={(e) => setSliderBalance(Number(e.target.value))}
-          style={{
-            accentColor:
-              sliderBalance < 0
-                ? "red"
-                : sliderBalance === 0
-                ? "rgb(102, 99, 99)"
-                : "green",
-          }}
-        />
+        <input type="range" />
       </div>
-      <div className="range-income">
+      <div className="range-balance">
         Income
-        <input
-          type="range"
-          value={sliderIncome}
-          min={0}
-          max={15000}
-          onChange={(e) => setSliderIncome(e.target.value)}
-          style={{
-            accentColor: sliderIncome > 0 && "green",
-          }}
-        />
+        <input type="range" />
       </div>
-      <div className="range-expanse">
+      <div className="range-balance">
         Expanse
-        <input
-          type="range"
-          value={sliderExpense}
-          min={0}
-          max={5000}
-          onChange={(e) => setSliderExpense(e.target.value)}
-          style={{
-            accentColor:
-              sliderExpense > oneHalf
-                ? "red"
-                : sliderBalance === 0
-                ? "rgb(102, 99, 99)"
-                : "green",
-          }}
-        />
+        <input type="range" />
       </div>
-      {/* {Object.entries(categories).map(([key, value]) => (
-        <div key={key}>
-          <p>{key.charAt(0).toUpperCase() + key.slice(1)}</p>
-          <input
-            type="range"
-            value={value}
-            min={0}
-            max={500}
-            onChange={(e) => setCategories(e.target.value)}
-          />
-        </div>
-      ))} */}
     </div>
   )
 }
