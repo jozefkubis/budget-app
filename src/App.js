@@ -23,21 +23,19 @@ export default function App() {
   const [inputBalance, setInputBalance] = useState(0)
 
   //MARK: useEffect
-  // useEffect(() => {
-  //   const loadLocalStorage = () => {
-  //     const storedIncome = localStorage.getItem("income")
-  //     const storedExpense = localStorage.getItem("expense")
-  //     const storedCategories = JSON.parse(localStorage.getItem("categories"))
+  useEffect(() => {
+    const loadLocalStorage = () => {
+      const storedIncome = localStorage.getItem("income")
+      const storedExpense = localStorage.getItem("expense")
+      const storedCategories = JSON.parse(localStorage.getItem("categories"))
 
-  //     storedIncome && setIncome(Number(storedIncome))
-  //     storedExpense && setExpense(Number(storedExpense))
-  //     storedCategories && setCategories(storedCategories)
-  //   }
+      storedIncome && setIncome(Number(storedIncome))
+      storedExpense && setExpense(Number(storedExpense))
+      storedCategories && setCategories(storedCategories)
+    }
 
-  //   // setInputBalance(balance + income - expense)
-
-  //   loadLocalStorage()
-  // }, [])
+    loadLocalStorage()
+  }, [])
 
   //MARK: handleOnClick
   function handleOnClick() {
@@ -61,11 +59,11 @@ export default function App() {
 
     setCost("")
 
-    // localStorage.setItem("income", JSON.stringify(newIncome))
-    // localStorage.setItem("expense", JSON.stringify(newExpense))
-    // localStorage.setItem("categories", JSON.stringify(newCategories))
-
     setCategories(newCategories)
+
+    localStorage.setItem("income", JSON.stringify(newIncome))
+    localStorage.setItem("expense", JSON.stringify(newExpense))
+    localStorage.setItem("categories", JSON.stringify(categories))
   }
 
   return (
@@ -268,10 +266,8 @@ function Add({
 }
 
 function Ranges({
-  inputBalance,
   setIncome,
   setExpense,
-  setInputBalance,
   balance,
   income,
   expense,
@@ -341,7 +337,7 @@ function Ranges({
             onChange={() => {}}
             style={{
               accentColor:
-                (value > 1000 && "red") || (value === 0 && "rgb(102, 99, 99)"),
+                (value >= 1000 && "red") || (value === 0 && "rgb(102, 99, 99)"),
             }}
           />
         </div>
