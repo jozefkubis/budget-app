@@ -20,7 +20,10 @@ export default function App() {
 
   const [cost, setCost] = useState("")
   const [sortBy, setSortBy] = useState("")
-  // const [date, setDate] = useState("")
+
+  const [sliderBalance, setSliderBalance] = useState(0)
+  const [sliderIncome, setSliderIncome] = useState(0)
+  const [sliderExpense, setSliderExpense] = useState(0)
 
   //MARK: useEffect
   useEffect(() => {
@@ -32,9 +35,13 @@ export default function App() {
       storedIncome && setIncome(Number(storedIncome))
       storedExpense && setExpense(Number(storedExpense))
       storedCategories && setCategories(storedCategories)
+
+      setSliderBalance(balance + income - expense)
+      setSliderIncome(income)
+      setSliderExpense(expense)
     }
     loadLocalStorage()
-  }, [])
+  }, [balance, income, expense])
 
   //MARK: handleOnClick
   function handleOnClick() {
@@ -96,7 +103,17 @@ export default function App() {
           setCategories={setCategories}
         />
       </div>
-      <Ranges />
+      <Ranges
+        sliderBalance={sliderBalance}
+        setSliderBalance={setSliderBalance}
+        sliderIncome={sliderIncome}
+        setSliderIncome={setSliderIncome}
+        sliderExpense={sliderExpense}
+        setSliderExpense={setSliderExpense}
+        balance={balance}
+        income={income}
+        expense={expense}
+      />
     </div>
   )
 }
@@ -187,7 +204,6 @@ function Today({ categories }) {
       <div className="transactions-today">
         {Object.entries(categories).map(([key, value]) => (
           <div key={key}>
-            {/* {console.log(key, value)} */}
             <p>
               {categoryEmojis[key]} {key.charAt(0).toUpperCase() + key.slice(1)}
             </p>
@@ -269,20 +285,67 @@ function Add({
   )
 }
 
-function Ranges() {
+function Ranges({
+  sliderBalance,
+  setSliderBalance,
+  sliderIncome,
+  setSliderIncome,
+  sliderExpense,
+  setSliderExpense,
+}) {
+  const oneHalf = sliderBalance / 2
+
   return (
-    <div className="ranges">
-      <div className="range-balance">
+    <div className="sliders">
+      <div>
         Balance
-        <input type="range" />
+        <input
+          type="range"
+          className="range-balance"
+          value={sliderBalance}
+          min={-5000}
+          max={5000}
+          onChange={(e) => setSliderBalance(Number(e.target.value))}
+          style={{
+            accentColor:
+              sliderBalance < 0
+                ? "red"
+                : sliderBalance === 0
+                ? "rgb(102, 99, 99)"
+                : "green",
+          }}
+        />
       </div>
-      <div className="range-balance">
+      <div className="range-income">
         Income
-        <input type="range" />
+        <input
+          type="range"
+          value={sliderIncome}
+          min={0}
+          max={15000}
+          onChange={(e) => setSliderIncome(e.target.value)}
+          style={{
+            accentColor: sliderIncome > 0 && "green",
+          }}
+        />
       </div>
-      <div className="range-balance">
+      <div className="range-expanse">
         Expanse
-        <input type="range" />
+        <input
+          type="range"
+          value={sliderExpense}
+          min={0}
+          max={5000}
+          onChange={(e) => setSliderExpense(e.target.value)}
+          style={{
+            accentColor:
+              sliderExpense > oneHalf
+                ? "red"
+                : sliderBalance === 0
+                ? "rgb(102, 99, 99)"
+                : "green",
+          }}
+        />
       </div>
     </div>
   )
