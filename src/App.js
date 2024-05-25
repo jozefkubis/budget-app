@@ -20,21 +20,24 @@ export default function App() {
 
   const [cost, setCost] = useState("")
   const [sortBy, setSortBy] = useState("")
-  // const [date, setDate] = useState("")
+  const [inputBalance, setInputBalance] = useState(0)
 
   //MARK: useEffect
-  useEffect(() => {
-    const loadLocalStorage = () => {
-      const storedIncome = localStorage.getItem("income")
-      const storedExpense = localStorage.getItem("expense")
-      const storedCategories = JSON.parse(localStorage.getItem("categories"))
+  // useEffect(() => {
+  //   const loadLocalStorage = () => {
+  //     const storedIncome = localStorage.getItem("income")
+  //     const storedExpense = localStorage.getItem("expense")
+  //     const storedCategories = JSON.parse(localStorage.getItem("categories"))
 
-      storedIncome && setIncome(Number(storedIncome))
-      storedExpense && setExpense(Number(storedExpense))
-      storedCategories && setCategories(storedCategories)
-    }
-    loadLocalStorage()
-  }, [])
+  //     storedIncome && setIncome(Number(storedIncome))
+  //     storedExpense && setExpense(Number(storedExpense))
+  //     storedCategories && setCategories(storedCategories)
+  //   }
+
+  //   // setInputBalance(balance + income - expense)
+
+  //   loadLocalStorage()
+  // }, [])
 
   //MARK: handleOnClick
   function handleOnClick() {
@@ -50,33 +53,19 @@ export default function App() {
       setExpense(newExpense)
     }
 
-    if (sortBy === "coffee") {
-      categories[sortBy] += Number(cost)
-    } else if (sortBy === "food") {
-      categories[sortBy] += Number(cost)
-    } else if (sortBy === "rent") {
-      categories[sortBy] += Number(cost)
-    } else if (sortBy === "education") {
-      categories[sortBy] += Number(cost)
-    } else if (sortBy === "entertainment") {
-      categories[sortBy] += Number(cost)
-    } else if (sortBy === "taxes") {
-      categories[sortBy] += Number(cost)
-    } else if (sortBy === "other") {
-      categories[sortBy] += Number(cost)
-    } else if (sortBy === "health") {
-      categories[sortBy] += Number(cost)
-    } else if (sortBy === "insurance") {
-      categories[sortBy] += Number(cost)
+    if (sortBy in newCategories) {
+      newCategories[sortBy] += Number(cost)
     }
 
     sortBy === "" && alert("Please select a category")
 
     setCost("")
 
-    localStorage.setItem("income", JSON.stringify(newIncome))
-    localStorage.setItem("expense", JSON.stringify(newExpense))
-    localStorage.setItem("categories", JSON.stringify(newCategories))
+    // localStorage.setItem("income", JSON.stringify(newIncome))
+    // localStorage.setItem("expense", JSON.stringify(newExpense))
+    // localStorage.setItem("categories", JSON.stringify(newCategories))
+
+    setCategories(newCategories)
   }
 
   return (
@@ -96,7 +85,16 @@ export default function App() {
           setCategories={setCategories}
         />
       </div>
-      <Ranges />
+      <Ranges
+        inputBalance={inputBalance}
+        setInputBalance={setInputBalance}
+        setIncome={setIncome}
+        setExpense={setExpense}
+        balance={balance}
+        income={income}
+        expense={expense}
+        categories={categories}
+      />
     </div>
   )
 }
@@ -269,21 +267,85 @@ function Add({
   )
 }
 
-function Ranges() {
+function Ranges({
+  inputBalance,
+  setIncome,
+  setExpense,
+  setInputBalance,
+  balance,
+  income,
+  expense,
+  categories,
+}) {
+  let totalBalance = balance + income - expense
+  let balanceLimit = totalBalance / 3
+
   return (
-    <div className="ranges">
+    <div className="sliders">
       <div className="range-balance">
         Balance
-        <input type="range" />
+        <input
+          type="range"
+          min={-5000}
+          max={15000}
+          value={totalBalance}
+          onChange={() => {}}
+          style={{
+            accentColor:
+              (totalBalance < 0 && "red") ||
+              (totalBalance === 0 && "rgb(102, 99, 99)") ||
+              (totalBalance > 0 && "green"),
+          }}
+        />
       </div>
-      <div className="range-balance">
+      <div className="range-income">
         Income
-        <input type="range" />
+        <input
+          type="range"
+          min={0}
+          max={15000}
+          value={income}
+          onChange={(e) => setIncome(e.target.value)}
+          style={{
+            accentColor:
+              (income > 0 && "green") || (income === 0 && "rgb(102, 99, 99)"),
+          }}
+        />
       </div>
-      <div className="range-balance">
+      <div className="range-expanse">
         Expanse
-        <input type="range" />
+        <input
+          type="range"
+          min={0}
+          max={5000}
+          value={expense}
+          onChange={(e) => setExpense(e.target.value)}
+          style={{
+            accentColor:
+              (expense < 0 && "red") ||
+              (expense === 0 && "rgb(102, 99, 99)") ||
+              (expense >= balanceLimit && "red") ||
+              (expense < balanceLimit && "green"),
+          }}
+        />
       </div>
+      {Object.entries(categories).map(([key, value]) => (
+        <div key={key}>
+          {/* {console.log(key, value)} */}
+          {key.charAt(0).toUpperCase() + key.slice(1)}
+          <input
+            type="range"
+            min={0}
+            max={2000}
+            value={value}
+            onChange={() => {}}
+            style={{
+              accentColor:
+                (value > 1000 && "red") || (value === 0 && "rgb(102, 99, 99)"),
+            }}
+          />
+        </div>
+      ))}
     </div>
   )
 }
