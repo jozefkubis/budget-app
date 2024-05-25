@@ -24,6 +24,8 @@ export default function App() {
   const [sliderBalance, setSliderBalance] = useState(0)
   const [sliderIncome, setSliderIncome] = useState(0)
   const [sliderExpense, setSliderExpense] = useState(0)
+  // const categoriesInput = Object.keys(categories)
+  // console.log(categoriesInput)
 
   //MARK: useEffect
   useEffect(() => {
@@ -113,6 +115,9 @@ export default function App() {
         balance={balance}
         income={income}
         expense={expense}
+        // categoriesInput={categoriesInput}
+        setCategories={setCategories}
+        categories={categories}
       />
     </div>
   )
@@ -204,6 +209,7 @@ function Today({ categories }) {
       <div className="transactions-today">
         {Object.entries(categories).map(([key, value]) => (
           <div key={key}>
+            {console.log(key, value)}
             <p>
               {categoryEmojis[key]} {key.charAt(0).toUpperCase() + key.slice(1)}
             </p>
@@ -292,6 +298,9 @@ function Ranges({
   setSliderIncome,
   sliderExpense,
   setSliderExpense,
+  // categoriesInput,
+  categories,
+  setCategories,
 }) {
   const oneHalf = sliderBalance / 2
 
@@ -347,6 +356,18 @@ function Ranges({
           }}
         />
       </div>
+      {/* {Object.entries(categories).map(([key, value]) => (
+        <div key={key}>
+          <p>{key.charAt(0).toUpperCase() + key.slice(1)}</p>
+          <input
+            type="range"
+            value={value}
+            min={0}
+            max={500}
+            onChange={(e) => setCategories(e.target.value)}
+          />
+        </div>
+      ))} */}
     </div>
   )
 }
