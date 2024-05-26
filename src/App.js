@@ -27,43 +27,49 @@ export default function App() {
     const loadLocalStorage = () => {
       const storedIncome = localStorage.getItem("income")
       const storedExpense = localStorage.getItem("expense")
-      const storedCategories = JSON.parse(localStorage.getItem("categories"))
+      const storedCategories = localStorage.getItem("categories")
 
-      storedIncome && setIncome(Number(storedIncome))
-      storedExpense && setExpense(Number(storedExpense))
-      storedCategories && setCategories(storedCategories)
+      // console.log(storedCategories)
+
+      if (storedIncome) {
+        setIncome(Number(JSON.parse(storedIncome)))
+      }
+      if (storedExpense) {
+        setExpense(Number(JSON.parse(storedExpense)))
+      }
+      if (storedCategories) {
+        setCategories(JSON.parse(storedCategories))
+      }
     }
+
+    console.log(categories)
 
     loadLocalStorage()
   }, [])
 
   //MARK: handleOnClick
   function handleOnClick() {
-    let newIncome = income
-    let newExpense = expense
-    const newCategories = { ...categories }
-
-    if (sortBy === "income") {
-      newIncome += Number(cost)
-      setIncome(newIncome)
-    } else {
-      newExpense += Number(cost)
-      setExpense(newExpense)
+    const costNumber = Number(cost)
+    if (!costNumber) {
+      alert("Please enter a valid number")
+      return
     }
 
-    if (sortBy in newCategories) {
-      newCategories[sortBy] += Number(cost)
+    const newIncome = sortBy === "income" ? income + costNumber : income
+    const newExpense = sortBy !== "income" ? expense + costNumber : expense
+    const newCategories = {
+      ...categories,
+      [sortBy]: (categories[sortBy] || 0) + costNumber,
     }
 
-    sortBy === "" && alert("Please select a category")
-
-    setCost("")
-
+    setIncome(newIncome)
+    setExpense(newExpense)
     setCategories(newCategories)
+    setCost("")
 
     localStorage.setItem("income", JSON.stringify(newIncome))
     localStorage.setItem("expense", JSON.stringify(newExpense))
-    localStorage.setItem("categories", JSON.stringify(categories))
+    localStorage.setItem("categories", JSON.stringify(newCategories))
   }
 
   return (

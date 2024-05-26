@@ -256,9 +256,9 @@ body {
 /* MARK: Ranges-input */
 .sliders input {
   width: 100%;
-  background-color: white;
   border: none;
   outline: none;
   font-size: 18px;
   padding: 5px;
+  accent-color: green;
 }
