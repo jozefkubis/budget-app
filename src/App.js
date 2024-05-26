@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react"
 import { MdAddCircleOutline } from "react-icons/md"
+import { IoStatsChart } from "react-icons/io5"
 
 //MARK: App
 export default function App() {
@@ -72,6 +73,11 @@ export default function App() {
     localStorage.setItem("categories", JSON.stringify(newCategories))
   }
 
+  //MARK: handleToggle
+  function handleToggle() {
+    document.querySelector(".sliders").classList.toggle("showHide")
+  }
+
   return (
     <div className="container" style={{ display: "flex" }}>
       <div className="app">
@@ -88,6 +94,9 @@ export default function App() {
           setBalance={setBalance}
           setCategories={setCategories}
         />
+        <div className="toggle">
+          <IoStatsChart onClick={() => handleToggle()} />
+        </div>
       </div>
       <Ranges
         inputBalance={inputBalance}
