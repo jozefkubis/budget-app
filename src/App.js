@@ -64,7 +64,7 @@ export default function App() {
 
     setIncome(newIncome)
     setExpense(newExpense)
-    setCategories(newCategories)
+    sortBy !== "income" && setCategories(newCategories)
     setCost("")
 
     localStorage.setItem("income", JSON.stringify(newIncome))
