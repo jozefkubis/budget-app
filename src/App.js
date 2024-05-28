@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { MdAddCircleOutline } from "react-icons/md"
 import { IoStatsChart } from "react-icons/io5"
 
-//MARK: App
+//MARK: App.................................................................................................
 export default function App() {
   const [balance, setBalance] = useState(0)
   const [income, setIncome] = useState(0)
@@ -29,8 +29,6 @@ export default function App() {
       const storedIncome = localStorage.getItem("income")
       const storedExpense = localStorage.getItem("expense")
       const storedCategories = localStorage.getItem("categories")
-
-      // console.log(storedCategories)
 
       if (storedIncome) {
         setIncome(Number(JSON.parse(storedIncome)))
@@ -114,7 +112,7 @@ export default function App() {
 
 //MARK: Components
 
-//MARK: Balance
+//MARK: Balance.................................................................................................
 function Balance({ balance, income, expense }) {
   let totalBalance = balance + income - expense
 
@@ -141,7 +139,7 @@ function Balance({ balance, income, expense }) {
   )
 }
 
-//MARK: Income
+//MARK: Income.................................................................................................
 function Income({ income }) {
   return (
     <div className="income">
@@ -151,7 +149,7 @@ function Income({ income }) {
   )
 }
 
-//MARK: Expense
+//MARK: Expense.................................................................................................
 function Expense({ expense }) {
   return (
     <div className="expense">
@@ -161,7 +159,7 @@ function Expense({ expense }) {
   )
 }
 
-//MARK: Today
+//MARK: Today.................................................................................................
 function Today({ categories }) {
   const dayOfWeek = [
     "Sunday",
@@ -210,7 +208,7 @@ function Today({ categories }) {
   )
 }
 
-//MARK: Add
+//MARK: Add.................................................................................................
 function Add({
   cost,
   setCost,
@@ -280,6 +278,7 @@ function Add({
   )
 }
 
+//MARK: Ranges.................................................................................................
 function Ranges({
   setIncome,
   setExpense,
@@ -324,7 +323,7 @@ function Ranges({
         />
       </div>
       <div className="range-expanse">
-        Expanse
+        Expense
         <input
           type="range"
           min={0}
@@ -347,12 +346,12 @@ function Ranges({
           <input
             type="range"
             min={0}
-            max={2000}
+            max={1000}
             value={value}
             onChange={() => {}}
             style={{
               accentColor:
-                (value >= 1000 && "red") || (value === 0 && "rgb(102, 99, 99)"),
+                (value >= 500 && "red") || (value === 0 && "rgb(102, 99, 99)"),
             }}
           />
         </div>
@@ -361,7 +360,7 @@ function Ranges({
   )
 }
 
-//MARK: Object.entries
+//MARK: Object.entries.................................................................................................
 // const objekt = {
 //   meno: "Bob",
 //   vek: 30,

@@ -19,7 +19,6 @@ body {
   height: auto;
   border: 5px solid rgb(102, 99, 99);
   border-radius: 10px;
-  position: relative;
 }
 
 /* MARK: Option */
@@ -237,10 +236,7 @@ body {
   height: auto;
   border: 5px solid rgb(102, 99, 99);
   border-radius: 10px;
-  position: absolute;
   font-weight: balder;
-  top: 7%;
-  left: 65%;
 }
 
 /* MARK: Ranges-div */
