@@ -1,13 +1,12 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useReducer } from "react"
 import { MdAddCircleOutline } from "react-icons/md"
 import { IoStatsChart } from "react-icons/io5"
 
-//MARK: App.................................................................................................
-export default function App() {
-  const [balance, setBalance] = useState(0)
-  const [income, setIncome] = useState(0)
-  const [expense, setExpense] = useState(0)
-  const [categories, setCategories] = useState({
+const initialState = {
+  balance: 0,
+  income: 0,
+  expense: 0,
+  categories: {
     food: 0,
     coffee: 0,
     rent: 0,
@@ -17,11 +16,44 @@ export default function App() {
     insurance: 0,
     education: 0,
     other: 0,
-  })
+  },
+  cost: "",
+  sortBy: "",
+  inputBalance: 0,
+}
 
-  const [cost, setCost] = useState("")
-  const [sortBy, setSortBy] = useState("")
-  const [inputBalance, setInputBalance] = useState(0)
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "setBalance":
+      return { ...state, balance: action.payload }
+    case "setIncome":
+      return { ...state, income: action.payload }
+    case "setExpense":
+      return { ...state, expense: action.payload }
+    case "setCategories":
+      return {
+        ...state,
+        categories: { ...state.categories, ...action.payload },
+      }
+    case "setCost":
+      return { ...state, cost: action.payload }
+    case "setSortBy":
+      return { ...state, sortBy: action.payload }
+    case "setInputBalance":
+      return { ...state, inputBalance: action.payload }
+    case "DELETE":
+      return initialState
+    default:
+      throw new Error("Invalid action type")
+  }
+}
+
+//MARK: App.................................................................................................
+export default function App() {
+  const [
+    { balance, income, expense, categories, cost, sortBy, inputBalance },
+    dispatch,
+  ] = useReducer(reducer, initialState)
 
   //MARK: useEffect
   useEffect(() => {
@@ -31,17 +63,24 @@ export default function App() {
       const storedCategories = localStorage.getItem("categories")
 
       if (storedIncome) {
-        setIncome(Number(JSON.parse(storedIncome)))
+        dispatch({
+          type: "setIncome",
+          payload: Number(JSON.parse(storedIncome)),
+        })
       }
       if (storedExpense) {
-        setExpense(Number(JSON.parse(storedExpense)))
+        dispatch({
+          type: "setExpense",
+          payload: Number(JSON.parse(storedExpense)),
+        })
       }
       if (storedCategories) {
-        setCategories(JSON.parse(storedCategories))
+        dispatch({
+          type: "setCategories",
+          payload: JSON.parse(storedCategories),
+        })
       }
     }
-
-    console.log(categories)
 
     loadLocalStorage()
   }, [])
@@ -61,10 +100,11 @@ export default function App() {
       [sortBy]: (categories[sortBy] || 0) + costNumber,
     }
 
-    setIncome(newIncome)
-    setExpense(newExpense)
-    sortBy !== "income" && setCategories(newCategories)
-    setCost("")
+    dispatch({ type: "setIncome", payload: newIncome })
+    dispatch({ type: "setExpense", payload: newExpense })
+    dispatch({ type: "setCost", payload: "" })
+    sortBy !== "income" &&
+      dispatch({ type: "setCategories", payload: newCategories })
 
     localStorage.setItem("income", JSON.stringify(newIncome))
     localStorage.setItem("expense", JSON.stringify(newExpense))
@@ -79,18 +119,18 @@ export default function App() {
   return (
     <div className="container" style={{ display: "flex" }}>
       <div className="app">
-        <Balance balance={balance} income={income} expense={expense} />
+        <Balance
+          balance={balance}
+          income={income}
+          expense={expense}
+          dispatch={dispatch}
+        />
         <Today categories={categories} />
         <Add
           cost={cost}
-          setCost={setCost}
           onClick={handleOnClick}
           sortBy={sortBy}
-          setSortBy={setSortBy}
-          setIncome={setIncome}
-          setExpense={setExpense}
-          setBalance={setBalance}
-          setCategories={setCategories}
+          dispatch={dispatch}
         />
         <div className="toggle">
           <IoStatsChart onClick={() => handleToggle()} />
@@ -98,13 +138,11 @@ export default function App() {
       </div>
       <Ranges
         inputBalance={inputBalance}
-        setInputBalance={setInputBalance}
-        setIncome={setIncome}
-        setExpense={setExpense}
         balance={balance}
         income={income}
         expense={expense}
         categories={categories}
+        dispatch={dispatch}
       />
     </div>
   )
@@ -196,7 +234,6 @@ function Today({ categories }) {
       <div className="transactions-today">
         {Object.entries(categories).map(([key, value]) => (
           <div key={key}>
-            {/* {console.log(key, value)} */}
             <p>
               {categoryEmojis[key]} {key.charAt(0).toUpperCase() + key.slice(1)}
             </p>
@@ -209,34 +246,10 @@ function Today({ categories }) {
 }
 
 //MARK: Add.................................................................................................
-function Add({
-  cost,
-  setCost,
-  onClick,
-  sortBy,
-  setSortBy,
-  setIncome,
-  setExpense,
-  setBalance,
-  setCategories,
-}) {
+function Add({ cost, onClick, sortBy, dispatch }) {
   //MARK: handleDelete
   function handleDelete() {
-    setIncome(0)
-    setExpense(0)
-    setBalance(0)
-    setCategories({
-      food: 0,
-      coffee: 0,
-      rent: 0,
-      entertainment: 0,
-      taxes: 0,
-      health: 0,
-      insurance: 0,
-      education: 0,
-      other: 0,
-    })
-    setSortBy("")
+    dispatch({ type: "DELETE" })
 
     localStorage.clear()
   }
@@ -245,7 +258,12 @@ function Add({
     <>
       <div className="addInput">
         <h3>Transaction</h3>
-        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+        <select
+          value={sortBy}
+          onChange={(e) =>
+            dispatch({ type: "setSortBy", payload: e.target.value })
+          }
+        >
           <option value=""></option>
           <option value="food">Food 🍔</option>
           <option value="coffee">Coffee ☕</option>
@@ -262,7 +280,9 @@ function Add({
           type="number"
           placeholder="0"
           value={cost}
-          onChange={(e) => setCost(Number(e.target.value))}
+          onChange={(e) =>
+            dispatch({ type: "setCost", payload: e.target.value })
+          }
         />
         <div className="add">
           <h4>Add new transaction</h4>
@@ -279,14 +299,7 @@ function Add({
 }
 
 //MARK: Ranges.................................................................................................
-function Ranges({
-  setIncome,
-  setExpense,
-  balance,
-  income,
-  expense,
-  categories,
-}) {
+function Ranges({ balance, income, expense, categories, dispatch }) {
   let totalBalance = balance + income - expense
   let balanceLimit = totalBalance / 3
 
@@ -315,7 +328,9 @@ function Ranges({
           min={0}
           max={15000}
           value={income}
-          onChange={(e) => setIncome(e.target.value)}
+          onChange={(e) =>
+            dispatch({ type: "setIncome", payload: Number(e.target.value) })
+          }
           style={{
             accentColor:
               (income > 0 && "green") || (income === 0 && "rgb(102, 99, 99)"),
@@ -329,7 +344,9 @@ function Ranges({
           min={0}
           max={5000}
           value={expense}
-          onChange={(e) => setExpense(e.target.value)}
+          onChange={(e) =>
+            dispatch({ type: "setExpense", payload: Number(e.target.value) })
+          }
           style={{
             accentColor:
               (expense < 0 && "red") ||
@@ -341,7 +358,6 @@ function Ranges({
       </div>
       {Object.entries(categories).map(([key, value]) => (
         <div key={key}>
-          {/* {console.log(key, value)} */}
           {key.charAt(0).toUpperCase() + key.slice(1)}
           <input
             type="range"
