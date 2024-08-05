@@ -59,18 +59,19 @@ function Ranges() {
           }}
         />
       </div>
-      {Object.entries(categories).map(([key, value]) => (
+      {Object.keys(categories).map((key) => (
         <div key={key}>
           {key.charAt(0).toUpperCase() + key.slice(1)}
           <input
             type="range"
             min={0}
             max={1000}
-            value={value}
+            value={categories[key]}
             onChange={() => {}}
             style={{
               accentColor:
-                (value >= 500 && "red") || (value === 0 && "rgb(102, 99, 99)"),
+                (categories[key] >= 500 && "red") ||
+                (categories[key] === 0 && "rgb(102, 99, 99)"),
             }}
           />
         </div>

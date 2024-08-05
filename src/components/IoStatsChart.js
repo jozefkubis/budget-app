@@ -5,8 +5,8 @@ function StatsChart() {
   const { handleToggle } = useBudged()
 
   return (
-    <div className="toggle">
-      <IoStatsChart onClick={handleToggle} />
+    <div className="toggle" onClick={handleToggle}>
+      Check range chart ➡ ➡ ➡ ➡ <IoStatsChart />
     </div>
   )
 }
