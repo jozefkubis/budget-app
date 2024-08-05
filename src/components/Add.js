@@ -1,13 +1,13 @@
 import { useBudged } from "../contexts/ContextBudged"
 import { MdAddCircleOutline } from "react-icons/md"
+import Select from "./Select"
 
 function Add() {
-  const { cost, sortBy, dispatch, handleOnClick } = useBudged()
+  const { cost, dispatch, handleOnClick } = useBudged()
 
   //MARK: handleDelete
   function handleDelete() {
     dispatch({ type: "DELETE" })
-
     localStorage.clear()
   }
 
@@ -15,24 +15,7 @@ function Add() {
     <>
       <div className="addInput">
         <h3>Transaction</h3>
-        <select
-          value={sortBy}
-          onChange={(e) =>
-            dispatch({ type: "setSortBy", payload: e.target.value })
-          }
-        >
-          <option value=""></option>
-          <option value="food">Food 🍔</option>
-          <option value="coffee">Coffee ☕</option>
-          <option value="rent">Rent 🏠</option>
-          <option value="entertainment">Entertainment 🎭</option>
-          <option value="taxes">Taxes 🏦</option>
-          <option value="health">Health 💊</option>
-          <option value="education">Education 📚</option>
-          <option value="insurance">Insurance 💰</option>
-          <option value="other">Other 🤷‍♂️</option>
-          <option value="income">Income 🤑</option>
-        </select>
+        <Select />
         <input
           type="number"
           placeholder="0"
