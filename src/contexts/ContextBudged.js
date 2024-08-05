@@ -3,6 +3,7 @@ import { createContext, useContext, useReducer, useEffect } from "react"
 
 const BudgedContext = createContext()
 
+//MARK: reducer
 const initialState = {
   balance: 0,
   income: 0,
@@ -49,6 +50,7 @@ const reducer = (state, action) => {
   }
 }
 
+//MARK: BudgedProvider
 function BudgedProvider({ children }) {
   const [
     { balance, income, expense, categories, cost, sortBy, inputBalance },
@@ -116,11 +118,13 @@ function BudgedProvider({ children }) {
     document.querySelector(".sliders").classList.toggle("showHide")
   }
 
+  //MARK: handleDelete
   function handleDelete() {
     dispatch({ type: "DELETE" })
     localStorage.clear()
   }
 
+  //MARK: handleKeyDown
   function handleKeyDown(e) {
     e.key === "Enter" && handleOnClick()
     e.key === "Delete" && handleDelete()
@@ -148,6 +152,7 @@ function BudgedProvider({ children }) {
   )
 }
 
+//MARK: useBudged
 function useBudged() {
   const context = useContext(BudgedContext)
   if (context === undefined) {
