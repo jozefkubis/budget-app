@@ -116,6 +116,16 @@ function BudgedProvider({ children }) {
     document.querySelector(".sliders").classList.toggle("showHide")
   }
 
+  function handleDelete() {
+    dispatch({ type: "DELETE" })
+    localStorage.clear()
+  }
+
+  function handleKeyDown(e) {
+    e.key === "Enter" && handleOnClick()
+    e.key === "Delete" && handleDelete()
+  }
+
   return (
     <BudgedContext.Provider
       value={{
@@ -129,6 +139,8 @@ function BudgedProvider({ children }) {
         handleOnClick,
         handleToggle,
         dispatch,
+        handleKeyDown,
+        handleDelete,
       }}
     >
       {children}

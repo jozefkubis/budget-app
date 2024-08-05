@@ -1,15 +1,9 @@
 import { useBudged } from "../contexts/ContextBudged"
-import { MdAddCircleOutline } from "react-icons/md"
 import Select from "./Select"
 
 function Add() {
-  const { cost, dispatch, handleOnClick } = useBudged()
-
-  //MARK: handleDelete
-  function handleDelete() {
-    dispatch({ type: "DELETE" })
-    localStorage.clear()
-  }
+  const { cost, dispatch, handleOnClick, handleKeyDown, handleDelete } =
+    useBudged()
 
   return (
     <>
@@ -23,15 +17,13 @@ function Add() {
           onChange={(e) =>
             dispatch({ type: "setCost", payload: e.target.value })
           }
+          onKeyDown={handleKeyDown}
         />
-        <div className="add">
-          <h4>Add new transaction</h4>
-          <span onClick={handleOnClick}>
-            <MdAddCircleOutline />
-          </span>
-        </div>
+        <button className="add" onClick={handleOnClick}>
+          Add ➕
+        </button>
         <button className="delete" onClick={handleDelete}>
-          Delete
+          Delete ➖
         </button>
       </div>
     </>
