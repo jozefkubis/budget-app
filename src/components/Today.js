@@ -36,12 +36,12 @@ function Today() {
         <span style={{ fontWeight: "bold" }}>- ${total}</span>
       </div>
       <div className="transactions-today">
-        {Object.entries(categories).map(([key, value]) => (
+        {Object.keys(categories).map((key) => (
           <div key={key}>
             <p>
               {categoryEmojis[key]} {key.charAt(0).toUpperCase() + key.slice(1)}
             </p>
-            <span>- ${value}</span>
+            <span>- ${categories[key]}</span>
           </div>
         ))}
       </div>
