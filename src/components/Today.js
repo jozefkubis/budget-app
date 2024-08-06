@@ -3,16 +3,21 @@ import { useBudged } from "../contexts/ContextBudged"
 function Today() {
   const { categories } = useBudged()
 
-  const dayOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+  const monthOfYear = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ]
-  const day = dayOfWeek[new Date().getDay()]
+  const day = monthOfYear[new Date().getMonth()]
 
   const total = Object.values(categories).reduce((acc, value) => acc + value, 0)
 

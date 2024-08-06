@@ -7,8 +7,9 @@ function Select() {
     <select
       value={sortBy}
       onChange={(e) => dispatch({ type: "setSortBy", payload: e.target.value })}
+      className="select"
     >
-      <option value=""></option>
+      <option value="">Select category...</option>
       <option value="food">Food 🍔</option>
       <option value="coffee">Coffee ☕</option>
       <option value="rent">Rent 🏠</option>
