@@ -95,22 +95,27 @@ function BudgedProvider({ children }) {
       return
     }
 
-    const newIncome = sortBy === "income" ? income + costNumber : income
-    const newExpense = sortBy !== "income" ? expense + costNumber : expense
-    const newCategories = {
-      ...categories,
-      [sortBy]: (categories[sortBy] || 0) + costNumber,
+    if (sortBy !== "") {
+      const newIncome = sortBy === "income" ? income + costNumber : income
+      const newExpense = sortBy !== "income" ? expense + costNumber : expense
+      const newCategories = {
+        ...categories,
+        [sortBy]: (categories[sortBy] || 0) + costNumber,
+      }
+
+      dispatch({ type: "setIncome", payload: newIncome })
+      dispatch({ type: "setExpense", payload: newExpense })
+      dispatch({ type: "setCost", payload: "" })
+      sortBy !== "income" &&
+        dispatch({ type: "setCategories", payload: newCategories })
+
+      localStorage.setItem("income", JSON.stringify(newIncome))
+      localStorage.setItem("expense", JSON.stringify(newExpense))
+      localStorage.setItem("categories", JSON.stringify(newCategories))
+    } else {
+      alert("Please select a category")
+      return
     }
-
-    dispatch({ type: "setIncome", payload: newIncome })
-    dispatch({ type: "setExpense", payload: newExpense })
-    dispatch({ type: "setCost", payload: "" })
-    sortBy !== "income" &&
-      dispatch({ type: "setCategories", payload: newCategories })
-
-    localStorage.setItem("income", JSON.stringify(newIncome))
-    localStorage.setItem("expense", JSON.stringify(newExpense))
-    localStorage.setItem("categories", JSON.stringify(newCategories))
   }
 
   //MARK: handleToggle
