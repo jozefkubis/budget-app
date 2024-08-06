@@ -38,7 +38,9 @@ function Month() {
     <div className="month">
       <div className="month-total">
         <h4>{month}</h4>
-        <span style={{ fontWeight: "bold" }}>- ${total}</span>
+        <span style={{ fontWeight: "bold" }}>
+          {total ? "-" : ""} ${total}
+        </span>
       </div>
       <div className="transactions-month">
         {Object.keys(categories).map((key) => (
@@ -46,7 +48,9 @@ function Month() {
             <p>
               {categoryEmojis[key]} {key.charAt(0).toUpperCase() + key.slice(1)}
             </p>
-            <span>- ${categories[key]}</span>
+            <span>
+              {categories[key] ? "-" : ""} ${categories[key]}
+            </span>
           </div>
         ))}
       </div>
