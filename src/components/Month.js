@@ -1,6 +1,6 @@
 import { useBudged } from "../contexts/ContextBudged"
 
-function Today() {
+function Month() {
   const { categories } = useBudged()
 
   const monthOfYear = [
@@ -17,7 +17,7 @@ function Today() {
     "November",
     "December",
   ]
-  const day = monthOfYear[new Date().getMonth()]
+  const month = monthOfYear[new Date().getMonth()]
 
   const total = Object.values(categories).reduce((acc, value) => acc + value, 0)
 
@@ -35,12 +35,12 @@ function Today() {
   }
 
   return (
-    <div className="today">
-      <div className="today-total">
-        <h4>{day}</h4>
+    <div className="month">
+      <div className="month-total">
+        <h4>{month}</h4>
         <span style={{ fontWeight: "bold" }}>- ${total}</span>
       </div>
-      <div className="transactions-today">
+      <div className="transactions-month">
         {Object.keys(categories).map((key) => (
           <div key={key}>
             <p>
@@ -54,4 +54,4 @@ function Today() {
   )
 }
 
-export default Today
+export default Month
