@@ -4,7 +4,7 @@ import { BudgedProvider } from "./contexts/ContextBudged"
 import Balance from "./components/Balance"
 import Add from "./components/Add"
 import Ranges from "./components/Ranges"
-import Today from "./components/Today"
+import Month from "./components/Month"
 import StatsChart from "./components/IoStatsChart"
 
 //MARK: App.................................................................................................
@@ -14,7 +14,7 @@ export default function App() {
       <BudgedProvider>
         <div className="app">
           <Balance />
-          <Today />
+          <Month />
           <Add />
           <StatsChart />
         </div>
